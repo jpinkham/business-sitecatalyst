@@ -1,5 +1,5 @@
 ---
-abstract: "Interface to Adobe SiteCatalyst's REST API."
+abstract: "Interface to Adobe Omniture SiteCatalyst's REST API."
 author:
   - 'Jennifer Pinkham <jpinkham@cpan.org>'
 build_requires:
@@ -18,7 +18,7 @@ build_requires:
 configure_requires:
   Module::Build: 0
 dynamic_config: 1
-generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.112621'
+generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120921'
 license: artistic
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -27,10 +27,10 @@ name: Business-SiteCatalyst
 provides:
   Business::SiteCatalyst:
     file: lib/Business/SiteCatalyst.pm
-    version: v1.0.0
+    version: v1.0.1
   Business::SiteCatalyst::Report:
     file: lib/Business/SiteCatalyst/Report.pm
-    version: v1.0.0
+    version: v1.0.1
 requires:
   perl: 5.006
 resources:
@@ -38,4 +38,4 @@ resources:
   homepage: https://metacpan.org/release/Business-SiteCatalyst
   license: http://opensource.org/licenses/artistic-license.php
   repository: https://sourceforge.net/p/perlscreport/code
-version: v1.0.0
+version: v1.0.1

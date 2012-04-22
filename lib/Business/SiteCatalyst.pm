@@ -18,28 +18,29 @@ use Business::SiteCatalyst::Report;
 
 =head1 NAME
 
-Business::SiteCatalyst - Interface to Adobe SiteCatalyst's REST API.
+Business::SiteCatalyst - Interface to Adobe Omniture SiteCatalyst's REST API.
 
 
 =head1 VERSION
 
-Version 1.0.0
+Version 1.0.1
 
 =cut
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 our $WEB_SERVICE_URL = 'https://api.omniture.com/admin/1.3/rest/?method=';
 
 
 =head1 SYNOPSIS
 
-This module allows you to interact with Adobe SiteCatalyst, an analystics Service
-Provider. It encapsulates all the communications with the API provided by Adobe
-SiteCatalyst to offer a Perl interface for managing reports.
+This module allows you to interact with Adobe Omniture SiteCatalyst, an analytics
+Service Provider. It encapsulates all the communications with the API provided 
+by Adobe SiteCatalyst to offer a Perl interface for all SiteCatalyst-related APIs.
 
-Please note that you will need to have purchased the Adobe SiteCatalyst product, and have web services enabled
-first in order to obtain a web services shared secret, as well as agree with the Terms and Conditions for using the API.
+Please note that you will need to have purchased the Adobe SiteCatalyst product,
+and have web services enabled first in order to obtain a web services shared
+secret, as well as agree with the Terms and Conditions for using the API.
 
 	use Business::SiteCatalyst;
 	
@@ -54,7 +55,8 @@ first in order to obtain a web services shared secret, as well as agree with the
 
 =head2 new()
 
-Create a new Adobe SiteCatalyst object that will be used as the interface with Adobe SiteCatalyst's API
+Create a new Adobe SiteCatalyst object that will be used as the interface with
+Adobe SiteCatalyst's API
 
 	my $site_catalyst = Business::SiteCatalyst->new(
 		username        => 'dummyusername',
@@ -119,7 +121,8 @@ Parameters:
 
 =item * type
 
-The type of the report to instantiate. Acceptable values are 'Overtime', 'Ranked', and 'Trended'.
+The type of the report to instantiate. 
+Acceptable values are 'Overtime', 'Ranked', and 'Trended'.
 
 =item * report_suite_id
 
@@ -127,7 +130,8 @@ The Report Suite ID you want to pull data from.
 
 =item * report_id
 
-The id of the existing report you want to check status of, retrieve results for, or cancel processing.
+The id of the existing report you want to check status of, retrieve results for,
+or cancel processing.
 
 =back
 
@@ -214,7 +218,7 @@ sub send_request
 
 =head2 verbose()
 
-Control the verbosity of the warnings in the code.
+Control the verbosity of the debugging output.
 
 $site_catalyst->verbose( 1 ); # turn on verbose information
 
@@ -237,8 +241,8 @@ sub verbose
 
 =head1 RUNNING TESTS
 
-By default, only basic tests that do not require a connection to Adobe SiteCatalyst's
-platform are run in t/.
+By default, only basic tests that do not require a connection to Adobe
+SiteCatalyst's platform are run in t/.
 
 To run the developer tests, you will need to do the following:
 
@@ -246,18 +250,18 @@ To run the developer tests, you will need to do the following:
 
 =item *
 
-Request access to Adobe web services from your Adobe Online Marketing Suite administrator (recommended) unless
-you want to run the tests in your production environment (definitely NOT
-recommended).
+Request access to Adobe web services from your Adobe Online Marketing Suite administrator.
 
 =item *
 
-In Adobe SiteCatalyst's interface, you will need to log in as an admin, then go to the
-"Admin" tab, "Admin Console > Company > Web Services". There you can find your "shared secret" for your username.
+In Adobe SiteCatalyst's interface, you will need to log in as an admin, then go
+to the "Admin" tab, "Admin Console > Company > Web Services". There you can find
+your "shared secret" for your username.
 
 =item *
 
-Your report suite IDs can be found in Adobe SiteCatalyst's interface. From the "Admin" tab, "Admin Console > Report Suites".
+Your report suite IDs can be found in Adobe SiteCatalyst's interface. Visit 
+"Admin > Admin Console > Report Suites".
 
 =back
 
@@ -273,7 +277,7 @@ the following content:
 			username                => 'username',
 			shared_secret           => 'shared_secret',
 			report_suite_id         => 'report_suite_id',
-			verbose                 => 0,
+			verbose                 => 0, # Enable this for debugging output
 		};
 	}
 	
