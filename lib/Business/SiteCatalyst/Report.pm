@@ -10,21 +10,21 @@ use Data::Validate::Type;
 
 =head1 NAME
 
-Business::SiteCatalyst::Report - Interface to Adobe SiteCatalyst's REST Report API.
+Business::SiteCatalyst::Report - Interface to Adobe Omniture SiteCatalyst's REST Report API.
 
 
 =head1 VERSION
 
-Version 1.0.0
+Version 1.0.1
 
 =cut
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 
 =head1 SYNOPSIS
 
-This module allows you to interact with Adobe SiteCatalyst, an analystics Service
+This module allows you to interact with Adobe Omniture SiteCatalyst, an analytics Service
 Provider. It encapsulates all the communications with the API provided by Adobe
 SiteCatalyst to offer a Perl interface for managing reports.
 
