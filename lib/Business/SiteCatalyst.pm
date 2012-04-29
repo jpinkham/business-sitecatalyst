@@ -13,6 +13,7 @@ use DateTime qw();
 use Digest::SHA1 qw();
 use MIME::Base64 qw();
 
+use Business::SiteCatalyst::Company;
 use Business::SiteCatalyst::Report;
 
 
@@ -145,6 +146,27 @@ sub instantiate_report
 }
 
 
+
+=head2 instantiate_company()
+
+Create a new Business::SiteCatalyst::Company object, which
+will allow retrieval of company-specific SiteCatalyst data.
+
+	my $company = $site_catalyst->instantiate_company();
+
+	
+Parameters: none
+
+=cut
+
+sub instantiate_company
+{
+	my ( $self, %args ) = @_;
+	
+	return Business::SiteCatalyst::Company->new( $self, %args );
+}
+
+
 =head1 INTERNAL METHODS
 
 =head2 send_request()
@@ -209,9 +231,20 @@ sub send_request
 	carp "Response >" . ( defined( $response ) ? $response->content() : '' ) . "<"
 		if $verbose;
 
-	my $json_out = JSON::decode_json( $response->content() );
+	my $json_out;
+	# Some SiteCatalyst API functions don't return valid JSON and instead return integers
+	if ( $response->content() =~ /^\d+$/ )
+	{
+		$json_out = $response->content();
+	}
+	else
+	{
+		$json_out = JSON::decode_json( $response->content() );
+	}
+	
 	carp "JSON Response >" . ( defined( $json_out ) ? Dumper($json_out) : '' ) . "<"
 		if $verbose;
+	
 	return $json_out;
 }
 
