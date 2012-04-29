@@ -28,5 +28,6 @@ t/Report/00-load.t
 t/Report/20-queue.t
 t/Report/30-is_ready.t
 t/Report/40-retrieve.t
+t/Report/50-cancel.t
 t/Report/99-cleanup.t
 

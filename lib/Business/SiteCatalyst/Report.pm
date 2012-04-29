@@ -66,7 +66,7 @@ first in order to obtain a web services shared secret, as well as agree with the
 	
 	unless ( defined $results )
 	{
-		$report->cancel();
+		$cancel_success = $report->cancel();
 	}
 
 =head1 METHODS
@@ -151,6 +151,7 @@ Queue a Business::SiteCatalyst report.
 
 	$report->queue( %report_arguments );
 
+	# Example: Top 5 referrers report
 	$report->queue(
 		dateFrom      => "2012-04-01",
 		dateTo        => "2012-04-15",
@@ -178,7 +179,7 @@ sub queue
 		}
 	);
 	
-	# Store report id, we'll need it to check the status
+	# Store report id; we'll need it to check the status
 	$self->{'id'} = $response->{'reportID'};
 	
 	return $response;
@@ -264,9 +265,9 @@ sub retrieve
 
 =head2 cancel()
 
-Cancel queued report request.
+Cancel queued report request. Returns 1 if successful, otherwise 0.
 
-	$report->cancel();
+	my $cancel_success = $report->cancel();
 
 =cut
 
@@ -274,6 +275,24 @@ sub cancel
 {
 	my ( $self, %args ) = @_;
 	
+	my $site_catalyst = $self->get_site_catalyst();
+	my $verbose = $site_catalyst->verbose();
+	
+	my $response = $site_catalyst->send_request(
+		method => 'Report.CancelReport',
+		data   =>
+		{
+			reportID => $self->get_id(),
+		}
+	);
+	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+
+	return $response;
+
 }
 
 
@@ -355,6 +374,7 @@ L<http://search.cpan.org/dist/Business-SiteCatalyst/>
 
 Thanks to ThinkGeek (L<http://www.thinkgeek.com/>) and its corporate overlords
 at Geeknet (L<http://www.geek.net/>), for footing the bill while I write code for them!
+Special thanks for technical help from fellow ThinkGeek CPAN author Guillaume Aubert L<http://search.cpan.org/~aubertg/>
 
 
 =head1 COPYRIGHT & LICENSE
