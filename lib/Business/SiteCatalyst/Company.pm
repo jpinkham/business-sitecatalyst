@@ -44,7 +44,7 @@ first in order to obtain a web services shared secret, as well as agree with the
 	
 	my $company = $site_catalyst->instantiate_company();
 	
-	my $response = $company->get_token_usage();
+	my $token_data = $company->get_token_usage();
 	
 	my $tokens_left = $company->get_token_count();
 	
@@ -88,7 +88,7 @@ sub new
 
 =head2 get_token_count()
 
-Determine the number of tokens left for your company.
+Determine the number of tokens left for your company. You are alloted 10,000 per month.
 
 	my $tokens_left = $company->get_token_count();
 
@@ -109,6 +109,30 @@ sub get_token_count
 	return $response;
 }
 
+
+
+=head2 get_token_usage()
+
+Information about the company's token usage for the current calendar month.
+
+	my $token_data = $company->get_token_usage();
+
+
+=cut
+
+sub get_token_usage
+{
+	my ( $self, %args ) = @_;
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	
+	my $response = $site_catalyst->send_request(
+		method => 'Company.GetTokenUsage',
+		data   => {'' => []}
+	);
+	
+	return $response;
+}
 
 
 =head2 get_site_catalyst()
