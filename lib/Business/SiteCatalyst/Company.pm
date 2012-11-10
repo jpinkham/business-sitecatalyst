@@ -10,7 +10,7 @@ use Data::Validate::Type;
 
 =head1 NAME
 
-Business::SiteCatalyst::Company - Interface to Adobe Omniture SiteCatalyst's REST 'Company' API.
+Business::SiteCatalyst::Company - Interface to Adobe Omniture SiteCatalyst's REST API 'Company' module.
 
 
 =head1 VERSION
@@ -24,12 +24,16 @@ our $VERSION = '1.0.1';
 
 =head1 SYNOPSIS
 
-This module allows you to interact with Adobe SiteCatalyst, an analytics Service
-Provider. It encapsulates all the communications with the API provided by Adobe
-SiteCatalyst to offer a Perl interface.
+This module allows you to interact with Adobe (formerly Omniture) SiteCatalyst,
+a web analytics service. It encapsulates all the communications with the API 
+provided by Adobe SiteCatalyst to offer a Perl interface for managing reports,
+pulling company-specific SiteCatalyst data (ex: token usage), uploading SAINT 
+data (feature not implemented yet), etc.
 
-Please note that you will need to have purchased the Adobe SiteCatalyst product, and have web services enabled
-first in order to obtain a web services shared secret, as well as agree with the Terms and Conditions for using the API.
+Please note that you will need to have purchased the Adobe SiteCatalyst product,
+and have web services enabled within your account first in order to obtain a web
+services shared secret, as well as agree with the Terms and Conditions for using 
+the API.
 
 	use Business::SiteCatalyst;
 	
