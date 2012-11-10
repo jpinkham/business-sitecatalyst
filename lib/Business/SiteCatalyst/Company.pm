@@ -56,6 +56,7 @@ the API.
 	
 	my $tracking_server = $company->get_tracking_server();
 	
+	my $endpoint = $company->get_endpoint();
 	
 =head1 METHODS
 
@@ -233,6 +234,43 @@ sub get_tracking_server
 	);
 	
 	return $response->{'tracking_server'};
+}
+
+
+=head2 get_endpoint()
+
+Retrieves the endpoint (API URL) for the specified company.
+NOTE: You can specify any company, not just your own.
+
+	my $endpoint = $company->get_endpoint( company => $company );
+
+Parameters:
+
+=over 4
+
+=item * company
+
+The company whose endpoint you want to retrieve.
+
+=back
+
+=cut
+
+sub get_endpoint
+{
+	my ( $self, %args ) = @_;
+	
+	croak "Argument 'company' is required"
+		if !defined( $args{'company'} ) || ( $args{'company'} eq '' );
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	
+	my $response = $site_catalyst->send_request(
+		method => 'Company.GetEndpoint',
+		data   => { 'company' => $args{'company'} }
+	);
+	
+	return $response;
 }
 
 
