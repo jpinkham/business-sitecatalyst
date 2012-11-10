@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 8 );
+	: plan( tests => 9 );
 
 ok(
 	open( FILE, 'business-sitecatalyst-report-reportid.tmp'),
@@ -51,6 +51,32 @@ ok(
 );
 
 my $response;
+
+
+# In case this report takes a bit to complete, check that it is actually ready before attempting to retrieve
+my $is_ready = 0;
+subtest(
+	'Verify that is_ready() eventually returns true',
+	sub
+	{
+		plan( tests => 5 );
+		
+		for ( my $i = 0; $i < 5; $i++ )
+		{
+			SKIP: {
+				skip 'Report is ready', 1 if $is_ready;
+				$is_ready = $report->is_ready();
+			
+				like (
+					$is_ready,
+					qr/^[01]$/,
+					'Check if is_ready() returns a boolean.',
+				);
+			}
+		}
+	}
+);
+
 lives_ok(
 	sub
 	{
