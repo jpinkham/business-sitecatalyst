@@ -26,7 +26,7 @@ our $VERSION = '1.0.1';
 
 This module allows you to interact with Adobe SiteCatalyst, an analytics Service
 Provider. It encapsulates all the communications with the API provided by Adobe
-SiteCatalyst to offer a Perl interface for managing reports.
+SiteCatalyst to offer a Perl interface.
 
 Please note that you will need to have purchased the Adobe SiteCatalyst product, and have web services enabled
 first in order to obtain a web services shared secret, as well as agree with the Terms and Conditions for using the API.
@@ -47,6 +47,10 @@ first in order to obtain a web services shared secret, as well as agree with the
 	my $token_data = $company->get_token_usage();
 	
 	my $tokens_left = $company->get_token_count();
+	
+	my $report_suites = $company->get_report_suites();
+	
+	my $tracking_server = $company->get_tracking_server();
 	
 	
 =head1 METHODS
@@ -150,6 +154,82 @@ sub get_site_catalyst
 	return $self->{'site_catalyst'};
 }
 
+
+
+=head2 get_report_suites()
+
+Information about the company's report suites configured in SiteCatalyst.
+
+	my $report_suites = $company->get_report_suites();
+
+
+=cut
+
+sub get_report_suites
+{
+	my ( $self, %args ) = @_;
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	
+	my $response = $site_catalyst->send_request(
+		method => 'Company.GetReportSuites',
+		data   => {'' => []}
+	);
+	
+	return $response->{'report_suites'};
+}
+
+
+=head2 get_tracking_server()
+
+Returns the tracking server and namespace for the specified report suite.
+If report suite is not specified, 'report_suite_id' in SiteCatalystConfig will be used.
+
+	my $tracking_server = $company->get_tracking_server();
+	my $tracking_server = $company->get_tracking_server( report_suite_id => $report_suite_id );
+
+Optional parameters:
+
+=over 4
+
+=item * report_suite_id
+
+The Report Suite ID you want to pull data from.
+
+=back
+
+=cut
+
+sub get_tracking_server
+{
+	my ( $self, %args ) = @_;
+	
+	# If report suite was not specified as an argument, try to use value from config
+	if ( !defined $args{'report_suite_id'} || $args{'report_suite_id'} eq '' )
+	{
+		require SiteCatalystConfig;
+		my $config = SiteCatalystConfig->new();
+	
+		if ( defined( $config ) && $config->{'report_suite_id'} ne '' )
+		{
+			$args{'report_suite_id'} = $config->{'report_suite_id'};
+		}
+		else
+		{
+			croak "Argument 'report_suite_id' is required because 'report_suite_id' is not specified in SiteCatalystConfig.pm"
+				if !defined( $args{'report_suite_id'} ) || ( $args{'report_suite_id'} eq '' );
+		}
+	}
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	
+	my $response = $site_catalyst->send_request(
+		method => 'Company.GetTrackingServer',
+		data   => { 'rsid' => $args{'report_suite_id'} }
+	);
+	
+	return $response->{'tracking_server'};
+}
 
 
 =head1 AUTHOR
