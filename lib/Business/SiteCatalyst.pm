@@ -17,6 +17,16 @@ use Business::SiteCatalyst::Company;
 use Business::SiteCatalyst::Report;
 
 
+# Some API methods return strings or numbers rather than valid JSON.
+# This list is used to return the raw response to the caller instead of decoding output as JSON
+my %METHODS_RETURNING_INVALID_JSON = 
+(
+	'Company.GetEndpoint'   => 1,  # Returns string
+	'Company.GetTokenCount' => 1,  # Returns number
+	'Report.CancelReport'   => 1,  # Returns number
+);
+
+
 =head1 NAME
 
 Business::SiteCatalyst - Interface to Adobe Omniture SiteCatalyst's REST API.
@@ -235,8 +245,8 @@ sub send_request
 		if $verbose;
 
 	my $json_out;
-	# Some SiteCatalyst API functions don't return valid JSON and instead return integers
-	if ( $response->content() =~ /^\d+$/ )
+	
+	if ( exists( $METHODS_RETURNING_INVALID_JSON{ $args{'method'} } ) )
 	{
 		$json_out = $response->content();
 	}
