@@ -24,6 +24,8 @@ t/pod-coverage.t
 t/Company/00-load.t
 t/Company/10-get_token_count.t
 t/Company/20-get_token_usage.t
+t/Company/30-get_report_suites.t
+t/Company/40-get_tracking_server.t
 t/Report/00-load.t
 t/Report/20-queue.t
 t/Report/30-is_ready.t
