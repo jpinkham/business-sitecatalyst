@@ -40,5 +40,5 @@ resources:
   bugtracker: http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Business-SiteCatalyst
   homepage: https://metacpan.org/release/Business-SiteCatalyst
   license: http://www.perlfoundation.org/artistic_license_1_0
-  repository: https://sourceforge.net/p/perlscreport/code
+  repository: https://github.com/jpinkham/business-sitecatalyst.git
 version: v1.2.0

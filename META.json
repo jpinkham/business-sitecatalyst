@@ -65,7 +65,7 @@
          "http://www.perlfoundation.org/artistic_license_1_0"
       ],
       "repository" : {
-         "url" : "https://sourceforge.net/p/perlscreport/code"
+         "url" : "https://github.com/jpinkham/business-sitecatalyst.git"
       }
    },
    "version" : "v1.2.0"
