@@ -44,15 +44,15 @@
    "provides" : {
       "Business::SiteCatalyst" : {
          "file" : "lib/Business/SiteCatalyst.pm",
-         "version" : "v1.2.0"
+         "version" : "v1.2.1"
       },
       "Business::SiteCatalyst::Company" : {
          "file" : "lib/Business/SiteCatalyst/Company.pm",
-         "version" : "v1.2.0"
+         "version" : "v1.2.1"
       },
       "Business::SiteCatalyst::Report" : {
          "file" : "lib/Business/SiteCatalyst/Report.pm",
-         "version" : "v1.2.0"
+         "version" : "v1.2.1"
       }
    },
    "release_status" : "stable",
@@ -68,5 +68,5 @@
          "url" : "https://github.com/jpinkham/business-sitecatalyst.git"
       }
    },
-   "version" : "v1.2.0"
+   "version" : "v1.2.1"
 }
