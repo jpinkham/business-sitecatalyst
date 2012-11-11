@@ -38,7 +38,7 @@ my $builder = Module::Build->new(
 	{
 		resources        =>
 		{
-			repository  => 'https://sourceforge.net/p/perlscreport/code',
+			repository  => 'https://github.com/jpinkham/business-sitecatalyst.git',
 			homepage    => 'https://metacpan.org/release/Business-SiteCatalyst',
 			bugtracker  => 'http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Business-SiteCatalyst',
 		},
