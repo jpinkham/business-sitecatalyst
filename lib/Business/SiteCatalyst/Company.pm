@@ -41,6 +41,7 @@ the API.
 	my $site_catalyst = Business::SiteCatalyst->new(
 		username        => 'dummyusername',
 		shared_secret   => 'dummysecret',
+		api_subdomain   => 'api|api2', #optional; default value='api'
 	);
 	
 	# See SiteCatalyst API Explorer at https://developer.omniture.com/en_US/get-started/api-explorer

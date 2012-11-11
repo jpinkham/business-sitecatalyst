@@ -41,6 +41,7 @@ the API.
 	my $site_catalyst = Business::SiteCatalyst->new(
 		username        => 'dummyusername',
 		shared_secret   => 'dummysecret',
+		api_subdomain   => 'api|api2', #optional; default value='api'
 	);
 	
 	my $report = $site_catalyst->instantiate_report(
@@ -226,6 +227,7 @@ sub is_ready
 	return $response->{'status'} eq 'done' ? 1 : 0;
 }
 
+
 =head2 retrieve()
 
 Retrieve report results from Adobe SiteCatalyst.
@@ -305,7 +307,7 @@ sub cancel
 
 Get Business::SiteCatalyst object used when creating the current object.
 
-	$report->get_site_catalyst();
+	my $site_catalyst = $report->get_site_catalyst();
 
 =cut
 
@@ -320,7 +322,7 @@ sub get_site_catalyst
 
 Get the report ID returned by Adobe SiteCatalyst when we queued the report.
 
-	$report->get_id()
+	my $report_id = $report->get_id();
 
 =cut
 

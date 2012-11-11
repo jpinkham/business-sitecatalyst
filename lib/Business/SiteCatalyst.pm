@@ -58,7 +58,8 @@ NOTE: the 'api_subdomain' option/config variable is utilized for the api url.
 To determine your specific API URL/Endpoint, please visit
 https://developer.omniture.com/en_US/get-started/api-explorer
 Most users won't need to set this variable unless the default causes errors.
-Ex: https://$api_subdomain.omniture.com/admin/1.3/rest/?
+
+API URL: 'https://' . $api_subdomain . '.omniture.com/admin/1.3/rest/?'
 
 
 	use Business::SiteCatalyst;
@@ -78,10 +79,13 @@ Ex: https://$api_subdomain.omniture.com/admin/1.3/rest/?
 Create a new Adobe SiteCatalyst object that will be used as the interface with
 Adobe SiteCatalyst's API
 
+	use Business::SiteCatalyst;
+	
+	# Create an object to communicate with Adobe SiteCatalyst
 	my $site_catalyst = Business::SiteCatalyst->new(
 		username        => 'dummyusername',
 		shared_secret   => 'dummysecret',
-		api_subdomain   => 'api2', #optional - default = 'api'
+		api_subdomain   => 'api|api2', #optional; default value='api'
 	);
 
 Creates a new object to communicate with Adobe SiteCatalyst.
