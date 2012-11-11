@@ -32,7 +32,7 @@ data (feature not implemented yet), etc.
 
 Please note that you will need to have purchased the Adobe SiteCatalyst product,
 and have web services enabled within your account first in order to obtain a web
-services shared secret, as well as agree with the Terms and Conditions for using 
+services shared secret, as well as agree with the Terms and Conditions for using
 the API.
 
 	use Business::SiteCatalyst;
@@ -49,8 +49,10 @@ the API.
 		report_suite_id => 'report suite id',
 	);
 	
-	# See SiteCatalyst API Explorer at https://developer.omniture.com/en_US/get-started/api-explorer
+	# See SiteCatalyst API Explorer at
+	# https://developer.omniture.com/en_US/get-started/api-explorer
 	# for Report.Queue[Trended|Ranked|Overtime] documentation
+	
 	$report->queue(
 		%report_arguments, #report-dependant
 	);
@@ -171,7 +173,8 @@ sub queue
 	my ( $self, %args ) = @_;
 	
 	my $site_catalyst = $self->get_site_catalyst();
-	
+	my $verbose = $site_catalyst->verbose();
+
 	my $response = $site_catalyst->send_request(
 		method => 'Report.Queue' . $self->{'type'},
 		data   =>
@@ -184,6 +187,16 @@ sub queue
 		}
 	);
 	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+	elsif ( !defined($response->{'reportID'}) )
+	{
+		carp "Full response: " . Dumper($response) if $verbose;
+		croak "Fatal error. Missing reportID in response.";
+	}
+
 	# Store report id; we'll need it to check the status
 	$self->{'id'} = $response->{'reportID'};
 	
@@ -297,9 +310,8 @@ sub cancel
 	{
 		croak "Fatal error. No response.";
 	}
-
+	
 	return $response;
-
 }
 
 
@@ -317,6 +329,7 @@ sub get_site_catalyst
 	
 	return $self->{'site_catalyst'};
 }
+
 
 =head2 get_id()
 

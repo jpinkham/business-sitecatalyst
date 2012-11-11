@@ -122,6 +122,11 @@ sub get_token_count
 		data   => {'' => []}
 	);
 	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+	
 	return $response;
 }
 
@@ -146,6 +151,11 @@ sub get_token_usage
 		method => 'Company.GetTokenUsage',
 		data   => {'' => []}
 	);
+	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
 	
 	return $response;
 }
@@ -187,6 +197,11 @@ sub get_report_suites
 		method => 'Company.GetReportSuites',
 		data   => {'' => []}
 	);
+	
+	if ( !defined($response) || !defined($response->{'report_suites'}) )
+	{
+		croak "Fatal error. No response or 'report_suites' missing from response.";
+	}
 	
 	return $response->{'report_suites'};
 }
@@ -240,6 +255,11 @@ sub get_tracking_server
 		data   => { 'rsid' => $args{'report_suite_id'} }
 	);
 	
+	if ( !defined($response) || !defined($response->{'tracking_server'}) )
+	{
+		croak "Fatal error. No response or missing tracking_server in response";
+	}
+	
 	return $response->{'tracking_server'};
 }
 
@@ -277,6 +297,11 @@ sub get_endpoint
 		data   => { 'company' => $args{'company'} }
 	);
 	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+	
 	return $response;
 }
 
@@ -285,7 +310,7 @@ sub get_endpoint
 
 Returns queued items that are pending approval for the requesting company.
 
-	my $report_suites = $company->get_queue();
+	my $queue_list = $company->get_queue();
 
 
 =cut
@@ -301,6 +326,11 @@ sub get_queue
 		data   => {'' => []}
 	);
 	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+
 	return $response;
 }
 
@@ -337,6 +367,11 @@ sub cancel_queue_item
 		data   => { 'qid' => $args{'queue_id'} }
 	);
 	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+
 	return $response eq 'true' ? 1 : 0;
 }
 
@@ -361,6 +396,11 @@ sub get_version_access
 		data   => {'' => []}
 	);
 	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+
 	return $response;
 }
 

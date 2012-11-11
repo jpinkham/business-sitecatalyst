@@ -340,6 +340,7 @@ the following content:
 			username                => 'username',
 			shared_secret           => 'shared_secret',
 			report_suite_id         => 'report_suite_id',
+			api_subdomain           => 'api|api2', #optional. default='api'
 			verbose                 => 0, # Enable this for debugging output
 		};
 	}
