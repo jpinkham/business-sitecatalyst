@@ -27,6 +27,8 @@ t/Company/20-get_token_usage.t
 t/Company/30-get_report_suites.t
 t/Company/40-get_tracking_server.t
 t/Company/50-get_endpoint.t
+t/Company/60-get_queue.t
+t/Company/70-cancel_queue_item.t
 t/Report/00-load.t
 t/Report/20-queue.t
 t/Report/30-is_ready.t

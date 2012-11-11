@@ -56,7 +56,11 @@ the API.
 	
 	my $tracking_server = $company->get_tracking_server();
 	
-	my $endpoint = $company->get_endpoint();
+	my $endpoint = $company->get_endpoint( company => $company );
+	
+	my $queue_list = $company->get_queue();
+	
+	my $success = $company->cancel_queue_item( queue_id => $queue_item_id );
 	
 =head1 METHODS
 
@@ -148,7 +152,7 @@ sub get_token_usage
 
 Get Business::SiteCatalyst object used when creating the current object.
 
-	$report->get_site_catalyst();
+	my $site_catalyst = $report->get_site_catalyst();
 
 =cut
 
@@ -271,6 +275,66 @@ sub get_endpoint
 	);
 	
 	return $response;
+}
+
+
+=head2 get_queue()
+
+Returns queued items that are pending approval for the requesting company.
+
+	my $report_suites = $company->get_queue();
+
+
+=cut
+
+sub get_queue
+{
+	my ( $self, %args ) = @_;
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	
+	my $response = $site_catalyst->send_request(
+		method => 'Company.GetQueue',
+		data   => {'' => []}
+	);
+	
+	return $response;
+}
+
+
+=head2 cancel_queue_item()
+
+Cancel a pending (queued) action that has yet to be approved.
+
+	my $success = $company->cancel_queue_item( queue_id => $queue_item_id );
+
+Parameters:
+
+=over 4
+
+=item * queue_id
+
+The numeric identifier of the pending item you wish to cancel.
+
+=back
+
+=cut
+
+sub cancel_queue_item
+{
+	my ( $self, %args ) = @_;
+	
+	croak "Argument 'queue_id' is required"
+		if !defined( $args{'queue_id'} ) || ( $args{'queue_id'} eq '' );
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	
+	my $response = $site_catalyst->send_request(
+		method => 'Company.CancelQueueItem',
+		data   => { 'qid' => $args{'queue_id'} }
+	);
+	
+	return $response eq 'true' ? 1 : 0;
 }
 
 
