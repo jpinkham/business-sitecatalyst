@@ -15,11 +15,11 @@ Business::SiteCatalyst::Report - Interface to Adobe Omniture SiteCatalyst's REST
 
 =head1 VERSION
 
-Version 1.0.1
+Version 1.2.0
 
 =cut
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.2.0';
 
 
 =head1 SYNOPSIS

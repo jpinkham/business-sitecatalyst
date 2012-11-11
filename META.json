@@ -4,7 +4,7 @@
       "Jennifer Pinkham <jpinkham@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "artistic_1"
    ],
@@ -44,11 +44,15 @@
    "provides" : {
       "Business::SiteCatalyst" : {
          "file" : "lib/Business/SiteCatalyst.pm",
-         "version" : "v1.0.1"
+         "version" : "v1.2.0"
+      },
+      "Business::SiteCatalyst::Company" : {
+         "file" : "lib/Business/SiteCatalyst/Company.pm",
+         "version" : "v1.2.0"
       },
       "Business::SiteCatalyst::Report" : {
          "file" : "lib/Business/SiteCatalyst/Report.pm",
-         "version" : "v1.0.1"
+         "version" : "v1.2.0"
       }
    },
    "release_status" : "stable",
@@ -58,11 +62,11 @@
       },
       "homepage" : "https://metacpan.org/release/Business-SiteCatalyst",
       "license" : [
-         "http://opensource.org/licenses/artistic-license.php"
+         "http://www.perlfoundation.org/artistic_license_1_0"
       ],
       "repository" : {
          "url" : "https://sourceforge.net/p/perlscreport/code"
       }
    },
-   "version" : "v1.0.1"
+   "version" : "v1.2.0"
 }
