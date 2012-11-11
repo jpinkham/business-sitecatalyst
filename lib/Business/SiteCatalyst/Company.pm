@@ -62,6 +62,8 @@ the API.
 	
 	my $success = $company->cancel_queue_item( queue_id => $queue_item_id );
 	
+	my $version_list = $company->get_version_access();
+	
 =head1 METHODS
 
 =head2 new()
@@ -335,6 +337,30 @@ sub cancel_queue_item
 	);
 	
 	return $response eq 'true' ? 1 : 0;
+}
+
+
+=head2 get_version_access()
+
+Information about the version of various Adobe services your company has access to.
+
+	my $version_list = $company->get_version_access();
+
+
+=cut
+
+sub get_version_access
+{
+	my ( $self, %args ) = @_;
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	
+	my $response = $site_catalyst->send_request(
+		method => 'Company.GetVersionAccess',
+		data   => {'' => []}
+	);
+	
+	return $response;
 }
 
 
