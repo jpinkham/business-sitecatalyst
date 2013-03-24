@@ -1,5 +1,12 @@
 Revision history for Business-SiteCatalyst
 
+v1.2.2  03/24/2013
+        Refactored Business::SiteCatalyst to use POSIX instead of DateTime,
+          to remove a dependancy on Params::Util (which prevented running
+          Devel::Cover against the code).
+        Updated documentation.
+
+
 v1.2.1  11/11/2012
         Updated all subs in Business::SiteCatalyst::Company to croak if
             there is no response from the API method call.
