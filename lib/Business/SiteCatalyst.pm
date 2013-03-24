@@ -9,7 +9,7 @@ use LWP::UserAgent qw();
 use HTTP::Request qw();
 use JSON qw();
 use Digest::MD5 qw();
-use DateTime qw();
+use POSIX qw();
 use Digest::SHA1 qw();
 use MIME::Base64 qw();
 
@@ -235,7 +235,7 @@ sub send_request
 	my $nonce = Digest::MD5::md5_hex( rand() * time() );
 	chomp($nonce);
 	
-	my $created = DateTime->now()->iso8601();
+	my $created = POSIX::strftime("%Y-%m-%dT%H:%M:%S", gmtime());
 	my $password_digest = MIME::Base64::encode_base64(
 		Digest::SHA1::sha1_hex( $nonce . $created . $self->{'shared_secret'} ) 
 	);
@@ -403,7 +403,7 @@ Special thanks for technical help from fellow ThinkGeek CPAN author Guillaume Au
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2012 Jennifer Pinkham.
+Copyright 2013 Jennifer Pinkham.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the Artistic License.

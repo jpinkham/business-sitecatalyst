@@ -9,7 +9,6 @@ WriteMakefile
                    'Carp' => 0,
                    'Data::Dumper' => 0,
                    'Data::Validate::Type' => '1.001000',
-                   'DateTime' => 0,
                    'Digest::MD5' => 0,
                    'Digest::SHA1' => 0,
                    'HTTP::Request' => 0,
