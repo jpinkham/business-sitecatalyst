@@ -11,7 +11,7 @@ MANIFEST			This list of files
 MANIFEST.SKIP
 META.json
 META.yml
-README
+README.md
 t/00-load.t
 t/01-local_config.t
 t/10-new.t
