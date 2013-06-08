@@ -12,12 +12,8 @@ and have web services enabled within your account first in order to obtain a web
 services shared secret, as well as agree with the Terms and Conditions for using 
 the API.
 
-NOTE: the 'api_subdomain' option/config variable is utilized for the api url.
-To determine your specific API URL/Endpoint, please visit
-https://developer.omniture.com/en_US/get-started/api-explorer
-Most users won't need to set this variable unless the default causes errors.
 
-API URL: 'https://' . $api_subdomain . '.omniture.com/admin/1.3/rest/?'
+Build status: [![Build Status](https://travis-ci.org/jpinkham/business-sitecatalyst.png?branch=master)](https://travis-ci.org/jpinkham/business-sitecatalyst)
 
 
 INSTALLATION
@@ -29,6 +25,17 @@ To install this module, run the following commands:
 	./Build
 	./Build test
 	./Build install
+
+NOTES
+-----
+
+NOTE: the 'api_subdomain' option/config variable is utilized for the api url.
+To determine your specific API URL/Endpoint, please visit
+https://developer.omniture.com/en_US/get-started/api-explorer
+Most users won't need to set this variable unless the default causes errors.
+
+API URL: 'https://' . $api_subdomain . '.omniture.com/admin/1.3/rest/?'
+
 
 SUPPORT AND DOCUMENTATION
 -------------------------
