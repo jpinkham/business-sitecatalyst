@@ -29,7 +29,7 @@ To install this module, run the following commands:
 NOTES
 -----
 
-NOTE: the 'api_subdomain' option/config variable is utilized for the api url.
+The 'api_subdomain' option/config variable is utilized for the api url.
 To determine your specific API URL/Endpoint, please visit
 https://developer.omniture.com/en_US/get-started/api-explorer
 Most users won't need to set this variable unless the default causes errors.
