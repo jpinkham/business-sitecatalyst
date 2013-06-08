@@ -1,4 +1,5 @@
 Business-SiteCatalyst
+=====================
 
 This module allows you to interact with Adobe (formerly Omniture) SiteCatalyst,
 a web analytics service. It encapsulates all the communications with the API 
@@ -20,6 +21,7 @@ API URL: 'https://' . $api_subdomain . '.omniture.com/admin/1.3/rest/?'
 
 
 INSTALLATION
+------------
 
 To install this module, run the following commands:
 
@@ -29,6 +31,7 @@ To install this module, run the following commands:
 	./Build install
 
 SUPPORT AND DOCUMENTATION
+-------------------------
 
 After installing, you can find documentation for this module with the
 perldoc command.
@@ -51,6 +54,7 @@ You can also look for information at:
 
 
 LICENSE AND COPYRIGHT
+--------------------
 
 Copyright (C) 2013 Jennifer Pinkham
 
