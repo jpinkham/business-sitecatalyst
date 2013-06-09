@@ -15,6 +15,9 @@ the API.
 
 Build status: [![Build Status](https://travis-ci.org/jpinkham/business-sitecatalyst.png?branch=master)](https://travis-ci.org/jpinkham/business-sitecatalyst)
 
+Test coverage: [![Coverage Status](https://coveralls.io/repos/jpinkham/business-sitecatalyst/badge.png?branch=master)](https://coveralls.io/r/jpinkham/business-sitecatalyst?branch=master)
+
+
 
 INSTALLATION
 ------------
