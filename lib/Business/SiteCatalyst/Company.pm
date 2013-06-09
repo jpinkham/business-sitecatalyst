@@ -215,8 +215,6 @@ sub get_report_suites
 =head2 get_tracking_server()
 
 Returns the tracking server and namespace for the specified report suite.
-If report suite is not specified, 'report_suite_id' in SiteCatalystConfig 
-(if one exists) will be used.
 
 	my $tracking_server = $company->get_tracking_server();
 	my $tracking_server = $company->get_tracking_server( 
@@ -239,21 +237,9 @@ sub get_tracking_server
 {
 	my ( $self, %args ) = @_;
 	
-	# If report suite was not specified as an argument, try to use value from config
 	if ( !defined $args{'report_suite_id'} || $args{'report_suite_id'} eq '' )
 	{
-		require SiteCatalystConfig;
-		my $config = SiteCatalystConfig->new();
-	
-		if ( defined( $config ) && $config->{'report_suite_id'} ne '' )
-		{
-			$args{'report_suite_id'} = $config->{'report_suite_id'};
-		}
-		else
-		{
-			croak "Argument 'report_suite_id' is required because 'report_suite_id' is not specified in SiteCatalystConfig.pm"
-				if !defined( $args{'report_suite_id'} ) || ( $args{'report_suite_id'} eq '' );
-		}
+		croak "Argument 'report_suite_id' is required";
 	}
 	
 	my $site_catalyst = $self->get_site_catalyst();

@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 8 );
+	: plan( tests => 11 );
 
 my $config = SiteCatalystConfig->new();
 
@@ -25,11 +25,30 @@ ok(
 );
 
 ok(
-	defined( 
+	open( FILE, 'business-sitecatalyst-report-report_suite_id.tmp'),
+	'Open temp file to read report suite id'
+);
+
+my $report_suite_id;
+
+ok(
+	$report_suite_id = do { local $/; <FILE> },
+	'Read in report suite id'
+);
+
+ok(
+	close FILE,
+	'Close temp file'
+);
+
+
+
+ok(
+	defined(
 		my $report = $site_catalyst->instantiate_report(
 			type            => 'Ranked',
-			report_suite_id => $config->{'report_suite_id'}
-		) 
+			report_suite_id => $report_suite_id
+		)
 	),
 	'Instantiate a new Business::SiteCatalyst::Report.',
 );

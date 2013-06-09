@@ -11,7 +11,7 @@ use Business::SiteCatalyst::Report;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 3 );
+	: plan( tests => 2 );
 
 my $config = SiteCatalystConfig->new();
 
@@ -26,11 +26,4 @@ like(
 	qr/\w/,
 	'The shared_secret is defined.',
 );
-
-like(
-	$config->{'report_suite_id'},
-	qr/\w/,
-	'The report_suite_id is defined.',
-);
-
 

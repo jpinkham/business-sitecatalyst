@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 6 );
+	: plan( tests => 8 );
 
 my $config = SiteCatalystConfig->new();
 
@@ -32,27 +32,43 @@ ok(
 );
 
 my $response;
+
+throws_ok(
+	sub
+	{
+		$response = $company->get_tracking_server( report_suite_id => '' );
+	},
+	qr/Argument 'report_suite_id' is required/,
+	'Request tracking server - empty "report_suite_id"'
+);
+
+ok(
+	open( FILE, 'business-sitecatalyst-report-report_suite_id.tmp'),
+	'Open temp file to read report suite id'
+);
+
+my $report_suite_id;
+
+ok(
+	$report_suite_id = do { local $/; <FILE> },
+	'Read in report suite id'
+);
+
+ok(
+	close FILE,
+	'Close temp file'
+);
+
+
 ok(
 	defined(
-		$response = $company->get_tracking_server( report_suite => $config->{'report_suite_id'} )
+		$response = $company->get_tracking_server( report_suite_id => $report_suite_id )
 	),
-	'Request tracking server - report suite specified.',
+	'Request tracking server - report_suite_id specified.',
 );
 
 ok(
 	Data::Validate::Type::is_string( $response, allow_empty => 0 ),
-	'Retrieve tracking server - report suite specified.',
-) || diag( explain( $response ) );
-
-ok(
-	defined(
-		$response = $company->get_tracking_server()
-	),
-	'Request tracking server - report suite not specified.',
-);
-
-ok(
-	Data::Validate::Type::is_string( $response, allow_empty => 0 ),
-	'Retrieve tracking server - report suite not specified.',
+	'Retrieve tracking server - report_suite_id specified.',
 ) || diag( explain( $response ) );
 
