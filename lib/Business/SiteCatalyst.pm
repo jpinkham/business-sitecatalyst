@@ -251,6 +251,8 @@ sub send_request
 	
 	$request->content_type('application/json');
 	$request->content( $json_in );
+
+	carp "Request content: >$json_in<" if $verbose;
 	
 	my $user_agent = LWP::UserAgent->new();
 	my $response = $user_agent->request($request);
