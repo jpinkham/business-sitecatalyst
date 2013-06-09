@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 6 );
+	: plan( tests => 7 );
 
 my $config = SiteCatalystConfig->new();
 
@@ -32,6 +32,15 @@ ok(
 );
 
 my $response;
+throws_ok(
+	sub
+	{
+		$response = $company->get_report_suites( test_mode => 1 );
+	},
+	qr/Fatal error/,
+	'Get report suites - test failure.',
+);
+
 ok(
 	defined(
 		$response = $company->get_report_suites()

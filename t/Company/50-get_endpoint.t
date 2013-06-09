@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 4 );
+	: plan( tests => 5 );
 
 my $config = SiteCatalystConfig->new();
 
@@ -32,6 +32,18 @@ ok(
 );
 
 my $response;
+throws_ok(
+	sub
+	{
+		$response = $company->get_endpoint(
+			company   => 'adobe',
+			test_mode => 1
+		);
+	},
+	qr/Fatal error/,
+	'Request SiteCatalyst API/server endpoint - test failure.',
+);
+
 ok(
 	defined(
 		$response = $company->get_endpoint( company => 'adobe' )

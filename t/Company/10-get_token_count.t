@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 4 );
+	: plan( tests => 5 );
 
 my $config = SiteCatalystConfig->new();
 
@@ -31,7 +31,19 @@ ok(
 	'Instantiate a new Business::SiteCatalyst::Company.',
 );
 
+
 my $response;
+
+throws_ok(
+	sub
+	{
+		$response = $company->get_token_count( test_mode => 1 );
+	},
+	qr/Fatal error/,
+	'Get current token count - test failure.',
+);
+
+
 ok(
 	$response = $company->get_token_count(),
 	'Get current token count.',

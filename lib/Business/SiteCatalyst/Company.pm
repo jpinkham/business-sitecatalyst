@@ -122,8 +122,9 @@ sub get_token_count
 	my $site_catalyst = $self->get_site_catalyst();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Company.GetTokenCount',
-		data   => {'' => []}
+		method    => 'Company.GetTokenCount',
+		data      => {'' => []},
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) )
@@ -153,8 +154,9 @@ sub get_token_usage
 	my $site_catalyst = $self->get_site_catalyst();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Company.GetTokenUsage',
-		data   => {'' => []}
+		method    => 'Company.GetTokenUsage',
+		data      => {'' => []},
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) )
@@ -199,8 +201,9 @@ sub get_report_suites
 	my $site_catalyst = $self->get_site_catalyst();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Company.GetReportSuites',
-		data   => {'' => []}
+		method    => 'Company.GetReportSuites',
+		data      => {'' => []},
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) || !defined($response->{'report_suites'}) )
@@ -245,8 +248,9 @@ sub get_tracking_server
 	my $site_catalyst = $self->get_site_catalyst();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Company.GetTrackingServer',
-		data   => { 'rsid' => $args{'report_suite_id'} }
+		method    => 'Company.GetTrackingServer',
+		data      => { 'rsid' => $args{'report_suite_id'} },
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) || !defined($response->{'tracking_server'}) )
@@ -287,8 +291,9 @@ sub get_endpoint
 	my $site_catalyst = $self->get_site_catalyst();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Company.GetEndpoint',
-		data   => { 'company' => $args{'company'} }
+		method    => 'Company.GetEndpoint',
+		data      => { 'company' => $args{'company'} },
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) )
@@ -316,8 +321,9 @@ sub get_queue
 	my $site_catalyst = $self->get_site_catalyst();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Company.GetQueue',
-		data   => {'' => []}
+		method    => 'Company.GetQueue',
+		data      => {'' => []},
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) )
@@ -357,8 +363,9 @@ sub cancel_queue_item
 	my $site_catalyst = $self->get_site_catalyst();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Company.CancelQueueItem',
-		data   => { 'qid' => $args{'queue_id'} }
+		method    => 'Company.CancelQueueItem',
+		data      => { 'qid' => $args{'queue_id'} },
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) )
@@ -386,9 +393,10 @@ sub get_version_access
 	my $site_catalyst = $self->get_site_catalyst();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Company.GetVersionAccess',
-		data   => {'' => []}
-	);
+		method    => 'Company.GetVersionAccess',
+		data      => {'' => []},
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
+);
 	
 	if ( !defined($response) )
 	{

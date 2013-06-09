@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 8 );
+	: plan( tests => 9 );
 
 my $config = SiteCatalystConfig->new();
 
@@ -59,6 +59,17 @@ ok(
 	'Close temp file'
 );
 
+throws_ok(
+	sub
+	{
+		$response = $company->get_tracking_server( 
+			test_mode       => 1,
+			report_suite_id => $report_suite_id,
+		);
+	},
+	qr/Fatal error/,
+	'Request tracking server - test failure.',
+);
 
 ok(
 	defined(

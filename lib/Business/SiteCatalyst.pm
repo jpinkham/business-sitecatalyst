@@ -206,8 +206,9 @@ Internal, formats the JSON call with the arguments provided and checks the
 reply.
 
 	my ( $error, $response_data ) = $site_catalyst->send_request(
-		method => $method,
-		data   => $data,
+		method    => $method,
+		data      => $data,
+		test_mode => 0|1, #optional
 	);
 
 =cut
@@ -218,6 +219,7 @@ sub send_request
 	
 	my $verbose = $self->verbose();
 	my $url = $self->{'webservice_url'} .  $args{'method'};
+	my $test_mode = defined $args{'test_mode'} ? $args{'test_mode'} : 0;
 	
 	# Check for mandatory parameters
 	foreach my $arg ( qw( method data ) )
@@ -251,8 +253,6 @@ sub send_request
 	
 	$request->content_type('application/json');
 	$request->content( $json_in );
-
-	carp "Request content: >$json_in<" if $verbose;
 	
 	my $user_agent = LWP::UserAgent->new();
 	my $response = $user_agent->request($request);
@@ -276,6 +276,11 @@ sub send_request
 	
 	carp "JSON Response >" . ( defined( $json_out ) ? Dumper($json_out) : '' ) . "<"
 		if $verbose;
+	
+	if ( $test_mode )
+	{
+		$json_out = undef;
+	}
 	
 	return $json_out;
 }

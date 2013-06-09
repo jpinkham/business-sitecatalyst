@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 5 );
+	: plan( tests => 6 );
 
 my $config = SiteCatalystConfig->new();
 
@@ -32,6 +32,15 @@ ok(
 );
 
 my $response;
+throws_ok(
+	sub
+	{
+		$response = $company->get_token_usage( test_mode => 1 );
+	},
+	qr/Fatal error/,
+	'Get current token usage - test failure.',
+);
+
 ok(
 	$response = $company->get_token_usage(),
 	'Get current token usage statistics.',
