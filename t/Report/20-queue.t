@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 11 );
+	: plan( tests => 12 );
 
 my $config = SiteCatalystConfig->new();
 
@@ -54,6 +54,21 @@ ok(
 );
 
 my $response;
+throws_ok(
+	sub
+	{
+		$response = $report->queue(
+			dateFrom      => "2012-04-01",
+			dateTo        => "2012-04-15",
+			metrics       => [{"id" => "instances"}],
+			elements      => [{"id" => "referrer","top" => "5"}],
+			test_mode     => 1,
+		);
+	},
+	qr/Fatal error/,
+	'Queue report - test failure.',
+);
+
 lives_ok(
 	sub
 	{

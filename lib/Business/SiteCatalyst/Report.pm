@@ -176,15 +176,16 @@ sub queue
 	my $verbose = $site_catalyst->verbose();
 
 	my $response = $site_catalyst->send_request(
-		method => 'Report.Queue' . $self->{'type'},
-		data   =>
+		method    => 'Report.Queue' . $self->{'type'},
+		data      =>
 		{
 			reportDescription =>
 				{
 					reportSuiteID => $self->{'report_suite_id'},
 					%args,
 				}
-		}
+		},
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) )
@@ -220,11 +221,12 @@ sub is_ready
 	my $verbose = $site_catalyst->verbose();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Report.GetStatus',
-		data   =>
+		method    => 'Report.GetStatus',
+		data      =>
 		{
 			reportID => $self->get_id(),
-		}
+		},
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) || !defined($response->{'status'}) )
@@ -257,11 +259,12 @@ sub retrieve
 	my $verbose = $site_catalyst->verbose();
 	
 	my $response = $site_catalyst->send_request(
-		method => 'Report.GetReport',
-		data   =>
+		method    => 'Report.GetReport',
+		data      =>
 		{
 			reportID => $self->get_id(),
-		}
+		},
+		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
 	);
 	
 	if ( !defined($response) || !defined($response->{'status'}) )
@@ -298,13 +301,21 @@ sub cancel
 	my $site_catalyst = $self->get_site_catalyst();
 	my $verbose = $site_catalyst->verbose();
 	
-	my $response = $site_catalyst->send_request(
-		method => 'Report.CancelReport',
-		data   =>
-		{
-			reportID => $self->get_id(),
-		}
-	);
+	my $response;
+	if ( defined $args{'test_mode'} && $args{'test_mode'} == 1 )
+	{
+		$response = undef;
+	}
+	else
+	{
+		$response = $site_catalyst->send_request(
+			method    => 'Report.CancelReport',
+			data      =>
+			{
+				reportID => $self->get_id(),
+			},
+		);
+	}
 	
 	if ( !defined($response) )
 	{

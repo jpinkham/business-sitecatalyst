@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 7 );
+	: plan( tests => 8 );
 
 ok(
 	open( FILE, 'business-sitecatalyst-report-reportid.tmp'),
@@ -51,6 +51,16 @@ ok(
 );
 
 my $response;
+
+throws_ok(
+	sub
+	{
+		$response = $report->cancel( test_mode => 1 );
+	},
+	qr/Fatal error/,
+	'Cancel report - test failure.',
+);
+
 lives_ok(
 	sub
 	{

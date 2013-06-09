@@ -61,14 +61,24 @@ subtest(
 	'Verify that is_ready() eventually returns true',
 	sub
 	{
-		plan( tests => 20 );
+		plan( tests => 21 );
 		
 		for ( my $i = 0; $i < 20; $i++ )
 		{
 			SKIP: {
 				skip 'Report is ready', 1 if $is_ready;
-				$is_ready = $report->is_ready();
 			
+				throws_ok(
+					sub
+					{
+						$is_ready = $report->is_ready( test_mode => 1 );
+					},
+					qr/Fatal error/,
+					'Report is ready - test failure',
+				);
+				
+				$is_ready = $report->is_ready();
+				
 				like (
 					$is_ready,
 					qr/^[01]$/,

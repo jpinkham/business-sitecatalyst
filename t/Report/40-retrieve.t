@@ -13,7 +13,7 @@ use Business::SiteCatalyst;
 eval 'use SiteCatalystConfig';
 $@
 	? plan( skip_all => 'Local connection information for Adobe SiteCatalyst required to run tests.' )
-	: plan( tests => 9 );
+	: plan( tests => 10 );
 
 ok(
 	open( FILE, 'business-sitecatalyst-report-reportid.tmp'),
@@ -76,6 +76,16 @@ subtest(
 		}
 	}
 );
+
+throws_ok(
+	sub
+	{
+		$response = $report->retrieve( test_mode => 1 );
+	},
+	qr/Fatal error/,
+	'Retrieve report - test failure.',
+);
+
 
 lives_ok(
 	sub
