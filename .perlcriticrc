@@ -5,6 +5,9 @@ severity = harsh
 # additional PerlCritic policies.
 theme = core
 
+# Include the policy name in the message.
+verbose = * %f: %m at line %l column %c.\n  Reference: %e.\n  Severity: %s.\n  Policy: %p.\n
+
 # What's wrong with tabs? They're more friendly.
 [-CodeLayout::ProhibitHardTabs]
 
@@ -24,3 +27,8 @@ max_mccabe = 30
 
 # Allow map in void context, now that it's efficient again.
 [-BuiltinFunctions::ProhibitVoidMap]
+
+
+# Allow slightly longer if-elsif-else chains.
+[ControlStructures::ProhibitCascadingIfElse]
+max_elsif = 3
