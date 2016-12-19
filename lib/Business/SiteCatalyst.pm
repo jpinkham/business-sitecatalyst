@@ -34,11 +34,11 @@ Business::SiteCatalyst - Interface to Adobe Omniture SiteCatalyst's REST API.
 
 =head1 VERSION
 
-Version 1.2.2
+Version 1.4.0
 
 =cut
 
-our $VERSION = '1.2.2';
+our $VERSION = '1.4.0';
 
 
 =head1 SYNOPSIS
@@ -68,9 +68,20 @@ API URL: 'https://' . $api_subdomain . '.omniture.com/admin/1.3/rest/?'
 	my $site_catalyst = Business::SiteCatalyst->new(
 		username        => 'dummyusername',
 		shared_secret   => 'dummysecret',
-		api_subdomain   => 'api|api2', #optional; default value='api'
+		api_subdomain   => 'api|api2|api3|api4|api5', #optional; default value='api'
 	);
 
+The API subdomain indicates the data centre that services the request. Currently
+available subdomains are:
+
+* api - San Jose
+* api2 - Dallas
+* api3 - London
+* api4 - Singapore
+* api5 - Pacific Northwest
+
+According to Adobe, "Company.GetEndpoint to periodically refresh the endpoint
+programmatically, in case the URL changes"
 
 =head1 METHODS
 
@@ -85,7 +96,7 @@ Adobe SiteCatalyst's API
 	my $site_catalyst = Business::SiteCatalyst->new(
 		username        => 'dummyusername',
 		shared_secret   => 'dummysecret',
-		api_subdomain   => 'api|api2', #optional; default value='api'
+		api_subdomain   => 'api|api2|api3|api4|api5', #optional; default value='api'
 	);
 
 Creates a new object to communicate with Adobe SiteCatalyst.
@@ -112,7 +123,7 @@ sub new
 	# in the 'api_subdomain' config variable in SiteCatalystConfig.pm
 	my $webservice_url = 'https://' .
 		( defined $args{'api_subdomain'} ? $args{'api_subdomain'} : 'api' ) .
-		'.omniture.com/admin/1.3/rest/?method=';
+		'.omniture.com/admin/1.4/rest/?method=';
 	
 	# Create the object
 	my $self = bless(
@@ -237,7 +248,7 @@ sub send_request
 	my $nonce = Digest::MD5::md5_hex( rand() * time() );
 	chomp($nonce);
 	
-	my $created = POSIX::strftime("%Y-%m-%dT%H:%M:%S", gmtime());
+	my $created = POSIX::strftime("%Y-%m-%dT%H:%M:%S", gmtime()) . 'Z';
 	my $password_digest = MIME::Base64::encode_base64(
 		Digest::SHA1::sha1_hex( $nonce . $created . $self->{'shared_secret'} ) 
 	);
@@ -258,7 +269,8 @@ sub send_request
 	my $response = $user_agent->request($request);
 	
 	croak "Request failed:" . $response->status_line()
-		if !$response->is_success();
+		if !$response->is_success()
+	    && !$args{'content_on_error'}; # some calls ( eg Report.Get ) now return an error when there is no error
 
 	carp "Response >" . ( defined( $response ) ? $response->content() : '' ) . "<"
 		if $verbose;
