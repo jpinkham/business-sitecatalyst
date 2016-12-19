@@ -289,7 +289,6 @@ sub get
 	return 1;
 }
 
-
 =head2 cancel()
 
 Cancel previously submitted report request, and removes it from processing queue.
@@ -330,6 +329,97 @@ sub cancel
 	return $response;
 }
 
+=head2 get_elements()
+
+Returns a list of available elements for a given report type,
+optionally in conjunction with a given list of elements and/or
+metrics.
+
+	my $available_elements = $report->get_elements(
+            reportType          => 'ranked'                 # optional
+          , existingElements    => [ list, of, elements ]   # optional
+          , existingMetrics     => [ list, of, metrics ]    # optional
+	);
+
+=cut
+
+sub get_elements
+{
+	my ( $self, %args ) = @_;
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	my $verbose = $site_catalyst->verbose();
+	
+	my $response;
+	if ( defined $args{'test_mode'} && $args{'test_mode'} == 1 )
+	{
+		$response = undef;
+	}
+	else
+	{
+		$response = $site_catalyst->send_request(
+			method    => 'Report.GetElements',
+			data      =>
+			{
+				reportSuiteID => $self->{'report_suite_id'},
+				%args,
+			},
+		);
+	}
+	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+	
+	return $response;
+}
+
+=head2 get_metrics()
+
+Returns a list of available metrics for a given report type,
+optionally in conjunction with a given list of elements and/or
+metrics.
+
+	my $available_elements = $report->get_elements(
+            reportType          => 'ranked'                 # optional
+          , existingElements    => [ list, of, elements ]   # optional
+          , existingMetrics     => [ list, of, metrics ]    # optional
+	);
+
+=cut
+
+sub get_metrics
+{
+	my ( $self, %args ) = @_;
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	my $verbose = $site_catalyst->verbose();
+	
+	my $response;
+	if ( defined $args{'test_mode'} && $args{'test_mode'} == 1 )
+	{
+		$response = undef;
+	}
+	else
+	{
+		$response = $site_catalyst->send_request(
+			method    => 'Report.GetMetrics',
+			data      =>
+			{
+				reportSuiteID => $self->{'report_suite_id'},
+				%args,
+			},
+		);
+	}
+	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+	
+	return $response;
+}
 
 =head2 get_site_catalyst()
 

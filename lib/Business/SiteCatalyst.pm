@@ -268,10 +268,16 @@ sub send_request
 	my $user_agent = LWP::UserAgent->new();
 	my $response = $user_agent->request($request);
 	
-	croak "Request failed:" . $response->status_line()
-		if !$response->is_success()
-	    && !$args{'content_on_error'}; # some calls ( eg Report.Get ) now return an error when there is no error
-
+	if ( !$response->is_success()
+	  && !$args{'content_on_error'} # some calls ( eg Report.Get ) now return an error when there is no error
+	) {
+        my $croak_text = $response->status_line();
+		if ( $response->content ) {
+            $croak_text .= "\n" . $response->content;
+        }
+		croak "Request failed:" . $croak_text
+    }
+    
 	carp "Response >" . ( defined( $response ) ? $response->content() : '' ) . "<"
 		if $verbose;
 
