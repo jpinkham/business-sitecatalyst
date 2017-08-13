@@ -66,7 +66,7 @@ You can also look for information at:
 LICENSE AND COPYRIGHT
 --------------------
 
-Copyright (C) 2013 Jennifer Pinkham
+Copyright (C) 2017 Jennifer Pinkham
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the Artistic License.

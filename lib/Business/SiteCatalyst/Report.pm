@@ -505,7 +505,7 @@ Special thanks for technical help from fellow ThinkGeek CPAN author Guillaume Au
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2013 Jennifer Pinkham.
+Copyright 2017 Jennifer Pinkham.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the Artistic License.
