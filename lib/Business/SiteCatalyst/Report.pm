@@ -19,7 +19,7 @@ Version 1.2.2
 
 =cut
 
-our $VERSION = '1.2.2';
+our $VERSION = '1.4.0';
 
 
 =head1 SYNOPSIS
@@ -41,7 +41,7 @@ the API.
 	my $site_catalyst = Business::SiteCatalyst->new(
 		username        => 'dummyusername',
 		shared_secret   => 'dummysecret',
-		api_subdomain   => 'api|api2', #optional; default value='api'
+		api_subdomain   => 'api|api2|api3|api4|api5', #optional; default value='api'
 	);
 	
 	my $report = $site_catalyst->instantiate_report(
@@ -51,7 +51,7 @@ the API.
 	
 	# See SiteCatalyst API Explorer at
 	# https://developer.omniture.com/en_US/get-started/api-explorer
-	# for Report.Queue[Trended|Ranked|Overtime] documentation
+	# for Report.Queue[Trended|Ranked|Overtime|Pathing|Fallout|Summary|Real-Time] documentation
 	
 	$report->queue(
 		%report_arguments, #report-dependant
@@ -87,17 +87,12 @@ NOTE: This should not be called directly. Instead, use C<Business::SiteCatalyst-
 
 	my $report = Business::SiteCatalyst::Report->new(
 		$site_catalyst,
-		type            => 'report type',
 		report_suite_id => 'report suite id',
 	);
 
 Parameters:
 
 =over 4
-
-=item * type
-
-The type of the report to instantiate. Acceptable values are 'Overtime', 'Ranked', and 'Trended'.
 
 =item * report_suite_id
 
@@ -120,7 +115,6 @@ sub new
 	my %required_arguments = (
 		'report_id'       => 'existing',
 		'report_suite_id' => 'new',
-		'type'            => 'new',
 	);
 		
 	foreach my $arg ( keys %required_arguments )
@@ -141,7 +135,6 @@ sub new
 	my $self = bless(
 		{
 			site_catalyst   => $site_catalyst,
-			type            => $args{'type'},
 			report_suite_id => $args{'report_suite_id'},
 			id              => $args{'report_id'},
 		},
@@ -172,11 +165,13 @@ sub queue
 {
 	my ( $self, %args ) = @_;
 	
+	$self->{report_response} = undef;
+	
 	my $site_catalyst = $self->get_site_catalyst();
 	my $verbose = $site_catalyst->verbose();
 
 	my $response = $site_catalyst->send_request(
-		method    => 'Report.Queue' . $self->{'type'},
+		method    => 'Report.Queue',
 		data      =>
 		{
 			reportDescription =>
@@ -217,35 +212,15 @@ sub is_ready
 {
 	my ( $self, %args ) = @_;
 	
-	my $site_catalyst = $self->get_site_catalyst();
-	my $verbose = $site_catalyst->verbose();
+	return $self->get( %args );
 	
-	my $response = $site_catalyst->send_request(
-		method    => 'Report.GetStatus',
-		data      =>
-		{
-			reportID => $self->get_id(),
-		},
-		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
-	);
-	
-	if ( !defined($response) || !defined($response->{'status'}) )
-	{
-		croak "Fatal error. No response or missing status in response";
-	}
-	elsif ( $response->{'status'} eq 'error' || $response->{'status'} eq 'failed' )
-	{
-		carp "Full response: " . Dumper($response) if $verbose;
-		croak "Something went wrong with this report!";
-	}
-	
-	return $response->{'status'} eq 'done' ? 1 : 0;
 }
 
 
 =head2 retrieve()
 
-Retrieve report results from Adobe SiteCatalyst.
+Return report results from previously fetched by calling
+is_ready().
 
 	my $results = $report->retrieve();
 
@@ -254,36 +229,65 @@ Retrieve report results from Adobe SiteCatalyst.
 sub retrieve
 {
 	my ( $self, %args ) = @_;
+	
+	if ( ! $self->{report_response} ) {
+		croak "Please call is_ready() before attempting retrieval. Report is not done.";
+	}
+	return $self->{report_response};
+}
+
+=head2 get()
+
+Calls Report.Get to get report results from Adobe SiteCatalyst,
+OR the 'error': report_not_valid. If the report is ready, it is stored
+in memory so retrieve() can return it.
+
+	my $results = $report->get();
+
+=cut
+
+sub get
+{
+	my ( $self, %args ) = @_;
 		
 	my $site_catalyst = $self->get_site_catalyst();
 	my $verbose = $site_catalyst->verbose();
 	
 	my $response = $site_catalyst->send_request(
-		method    => 'Report.GetReport',
+		method    => 'Report.Get',
 		data      =>
 		{
 			reportID => $self->get_id(),
 		},
 		test_mode => defined $args{'test_mode'} ? $args{'test_mode'} : 0,
+		content_on_error => 1,       # adobe send a 400 error if the report is not ready
 	);
 	
-	if ( !defined($response) || !defined($response->{'status'}) )
-	{
-		croak "Fatal error. No response or missing status in response";
+	if (
+		  !defined($response)
+	 || ( !defined($response->{'runSeconds'}) && !defined($response->{'error'}) )
+	) {
+		croak "Fatal error. No response, or missing [ runSeconds and error ] in response";
 	}
-	elsif ( $response->{'status'} eq 'error' || $response->{'status'} eq 'failed' )
+	elsif ( $response->{'status'} eq 'error' || $response->{'status'} eq 'failed' ) # are these still valid in 1.4?
 	{
 		carp "Full response: " . Dumper($response) if $verbose;
 		croak "Something went wrong with this report!";
 	}
-	elsif ( $response->{'status'} ne 'done' )
+	elsif ( defined($response->{'error'}) && $response->{'error'} eq 'report_not_ready' )
 	{
-		croak "Please call is_ready() before attempting retrieval. Report is not done.";
+		carp "Report not ready";
+		return 0
 	}
-
-	return $response->{'report'};
+	elsif ( !defined($response->{'report'}) )
+	{
+		croak "Unhandled response in get():\n" . to_json( $response, { pretty => 1 } );
+	}
+	
+	$self->{report_response} = $response->{'report'};
+	
+	return 1;
 }
-
 
 =head2 cancel()
 
@@ -325,6 +329,97 @@ sub cancel
 	return $response;
 }
 
+=head2 get_elements()
+
+Returns a list of available elements for a given report type,
+optionally in conjunction with a given list of elements and/or
+metrics.
+
+	my $available_elements = $report->get_elements(
+            reportType          => 'ranked'                 # optional
+          , existingElements    => [ list, of, elements ]   # optional
+          , existingMetrics     => [ list, of, metrics ]    # optional
+	);
+
+=cut
+
+sub get_elements
+{
+	my ( $self, %args ) = @_;
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	my $verbose = $site_catalyst->verbose();
+	
+	my $response;
+	if ( defined $args{'test_mode'} && $args{'test_mode'} == 1 )
+	{
+		$response = undef;
+	}
+	else
+	{
+		$response = $site_catalyst->send_request(
+			method    => 'Report.GetElements',
+			data      =>
+			{
+				reportSuiteID => $self->{'report_suite_id'},
+				%args,
+			},
+		);
+	}
+	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+	
+	return $response;
+}
+
+=head2 get_metrics()
+
+Returns a list of available metrics for a given report type,
+optionally in conjunction with a given list of elements and/or
+metrics.
+
+	my $available_elements = $report->get_elements(
+            reportType          => 'ranked'                 # optional
+          , existingElements    => [ list, of, elements ]   # optional
+          , existingMetrics     => [ list, of, metrics ]    # optional
+	);
+
+=cut
+
+sub get_metrics
+{
+	my ( $self, %args ) = @_;
+	
+	my $site_catalyst = $self->get_site_catalyst();
+	my $verbose = $site_catalyst->verbose();
+	
+	my $response;
+	if ( defined $args{'test_mode'} && $args{'test_mode'} == 1 )
+	{
+		$response = undef;
+	}
+	else
+	{
+		$response = $site_catalyst->send_request(
+			method    => 'Report.GetMetrics',
+			data      =>
+			{
+				reportSuiteID => $self->{'report_suite_id'},
+				%args,
+			},
+		);
+	}
+	
+	if ( !defined($response) )
+	{
+		croak "Fatal error. No response.";
+	}
+	
+	return $response;
+}
 
 =head2 get_site_catalyst()
 
