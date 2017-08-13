@@ -40,7 +40,7 @@ my $builder = Module::Build->new(
 		{
 			repository  => 'https://github.com/jpinkham/business-sitecatalyst.git',
 			homepage    => 'https://metacpan.org/release/Business-SiteCatalyst',
-			bugtracker  => 'http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Business-SiteCatalyst',
+			bugtracker  => 'https://github.com/jpinkham/business-sitecatalyst/issues',
 		},
 	},
 );

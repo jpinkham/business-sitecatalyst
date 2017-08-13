@@ -383,8 +383,7 @@ Jennifer Pinkham, C<< <jpinkham at cpan.org> >>.
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-Business-SiteCatalyst at rt.cpan.org>,
-or through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Business-SiteCatalyst>.
+Please report any bugs or feature requests at L<https://github.com/jpinkham/business-sitecatalyst/issues>.
 I will be notified, and then you'll automatically be notified of progress on
 your bug as I make changes.
 
@@ -420,10 +419,9 @@ L<http://search.cpan.org/dist/Business-SiteCatalyst/>
 
 
 =head1 ACKNOWLEDGEMENTS
-
-Thanks to ThinkGeek (L<http://www.thinkgeek.com/>) and its corporate overlords
-at Geeknet (L<http://www.geek.net/>), for footing the bill while I write code for them!
-Special thanks for technical help from fellow ThinkGeek CPAN author Guillaume Aubert L<http://search.cpan.org/~aubertg/>
+Thank you to contributor dankasak.
+Special thanks for technical help and contributions from fellow CPAN author
+Guillaume Aubert L<http://search.cpan.org/~aubertg/>
 
 
 =head1 COPYRIGHT & LICENSE
