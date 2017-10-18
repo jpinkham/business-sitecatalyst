@@ -1,5 +1,8 @@
 Revision history for Business-SiteCatalyst
 
+        10/18/2017
+        Modified README to add a note that this module is up for adoption.
+
 v1.2.2  03/24/2013
         Refactored Business::SiteCatalyst to use POSIX instead of DateTime,
           to remove a dependancy on Params::Util (which prevented running
