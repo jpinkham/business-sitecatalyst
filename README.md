@@ -1,6 +1,9 @@
-**THIS MODULE IS UP FOR ADOPTION (as of Sep 2017)! I no longer have access to 
+**THIS MODULE HAS NOT BEEN UPDATED SINCE 2012! I no longer have access to 
 Adobe SiteCatalyst so I cannot maintain it any longer.
 
+
+
+original description:
 
 Business-SiteCatalyst
 =====================
